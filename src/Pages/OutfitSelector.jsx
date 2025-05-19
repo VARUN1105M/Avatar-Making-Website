@@ -59,7 +59,7 @@ export default function OutfitSelector() {
         <div className="flex justify-center items-center h-56 mb-4">
           <div className="w-40 h-56">
             {SelectedComponent ? (
-              <SelectedComponent />
+              <SelectedComponent skintone={skinTone} />
             ) : (
               <div dangerouslySetInnerHTML={{ __html: selectedSVG }} />
             )}
@@ -84,7 +84,7 @@ export default function OutfitSelector() {
                 >
                   <div className="w-16 h-24 flex items-center justify-center">
                     {CostumePreview ? (
-                      <CostumePreview />
+                      <CostumePreview skintone={skinTone} />
                     ) : (
                       <img
                         src={costume.file}
