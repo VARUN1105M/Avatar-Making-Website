@@ -1,19 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../../supabase/Supabase'; // update path if needed
 
 function SkinToneSelector() {
   const navigate = useNavigate();
   const [selectedTone, setSelectedTone] = useState(null);
-
-  const gradientBackground = {
-    background: 'linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1)',
-    minHeight: '100vh',
-    width: '100vw',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '2rem',
-  };
+  const [userId, setUserId] = useState(null);
 
   const skinTones = [
     '#F9E4E4', '#F9D5D3', '#FCE8E8', '#FBE3D1', '#F6C28B', '#D2964A', '#A96923',
@@ -21,21 +13,56 @@ function SkinToneSelector() {
     '#9C754D', '#7F5D39', '#A97C50', '#7F5B31', '#5C3D19', '#3F2710', '#291B09'
   ];
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+
+      if (error) {
+        console.error('Error fetching user:', error.message);
+      } else if (user) {
+        setUserId(user.id);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   const handleSelectTone = (colorCode) => {
     console.log("Selected Skin Tone:", colorCode);
     setSelectedTone(colorCode);
   };
 
-  const handleNext = () => {
-    if (selectedTone) {
-      navigate('/outfitselector', { state: { skinTone: selectedTone } });
-    } else {
+  const handleNext = async () => {
+    if (!selectedTone) {
       alert('Please select a skin tone before continuing.');
+      return;
+    }
+
+    if (!userId) {
+      alert('User not logged in.');
+      return;
+    }
+
+    console.log("Storing in Supabase -> user_id:", userId, " | skincolorcode:", selectedTone);
+
+    const { error } = await supabase
+      .from('user_profiles')
+      .upsert({ id: userId, skincolorcode: selectedTone }, { onConflict: ['id'] });
+
+    if (error) {
+      console.error('Failed to save to Supabase:', error.message);
+      alert('Failed to save skin tone.');
+    } else {
+      console.log('Skin tone saved successfully!');
+      navigate('/outfitselector');  // <-- no state passed here
     }
   };
 
   return (
-    <div style={gradientBackground}>
+    <div className="min-h-screen w-full flex justify-center items-center bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-200 p-4">
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm text-center">
         <h1 className="text-purple-600 font-bold text-2xl mb-4">TWEAK</h1>
         <h2 className="font-semibold mb-6">Select Your Skin Tone</h2>
