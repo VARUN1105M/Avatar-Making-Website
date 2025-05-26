@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import AvatarBody from '../Components/AvatharBody'; // Correct path
+import AvatarBody from '../Components/AvatharBody'; // Adjust path as needed
+import { supabase } from '../../supabase/Supabase'; // ✅ Make sure this path is correct
 
 const costumes = [
   { id: 1, component: AvatarBody, label: 'Costume 1' },
@@ -10,16 +11,43 @@ const costumes = [
 
 export default function OutfitSelector() {
   const location = useLocation();
-  const skinTone = location.state?.skinTone || null;
+  const skinToneFromState = location.state?.skinTone || null;
 
   const [selectedSVG, setSelectedSVG] = useState('');
   const [SelectedComponent, setSelectedComponent] = useState(null);
   const [selectedCostumeId, setSelectedCostumeId] = useState(null);
+  const [skinTone, setSkinTone] = useState(skinToneFromState); // 🔁 State to store DB value
 
   useEffect(() => {
-    console.log('Skin Tone from previous page:', skinTone);
+    console.log('Skin Tone from previous page (state):', skinToneFromState);
     handleCostumeClick(costumes[0]); // Load first costume initially
+    fetchSkinColor(); // 🔁 Fetch from Supabase
   }, []);
+
+  const fetchSkinColor = async () => {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      console.error('User not found:', userError?.message);
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .select('skincolorcode')
+      .eq('id', user.id)
+      .single();
+
+    if (error) {
+      console.error('Error fetching skin color:', error.message);
+    } else {
+      console.log('✅ Skin Color Code from DB:', data.skincolorcode);
+      setSkinTone(data.skincolorcode);
+    }
+  };
 
   const gradientBackground = {
     background: 'linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1)',

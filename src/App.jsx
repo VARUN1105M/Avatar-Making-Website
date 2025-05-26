@@ -7,6 +7,7 @@ import MagicRedirect from './Pages/MagicRedirect';  // <-- import here
 import Navigation from './Components/Navigation';
 import SkinToneSelector from './Pages/SkinToneSelector';
 import OutfitSelector from './Pages/OutfitSelector';
+import HaircolorSelector from './Pages/Haircolor';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/userdetails" element={<UserDetails />} />
         <Route path="/skintoneselector" element={<SkinToneSelector />} />
         <Route path="/outfitselector" element={<OutfitSelector />} />
+        <Route path="/haircolorselector" element={<HaircolorSelector />} />
       </Routes>
     </>
   );

@@ -110,7 +110,7 @@ export default function Signup() {
       }}
     >
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm text-center">
-        <h2 className="text-2xl font-bold mb-6">Sign Up / Login with Google</h2>
+        <h2 className="text-2xl font-bold mb-6">Sign Up with Google</h2>
 
         {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
         {infoMsg && <p style={{ color: 'green' }}>{infoMsg}</p>}

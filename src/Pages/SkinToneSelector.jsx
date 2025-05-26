@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabase/Supabase'; // update path if needed
 
+const gradientBackground = {
+  background: 'linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1)',
+  minHeight: '100vh',
+  width: '100vw',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '2rem',
+};
+
 function SkinToneSelector() {
   const navigate = useNavigate();
   const [selectedTone, setSelectedTone] = useState(null);
@@ -62,7 +72,7 @@ function SkinToneSelector() {
   };
 
   return (
-    <div className="min-h-screen w-full flex justify-center items-center bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-200 p-4">
+    <div style={gradientBackground}>
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm text-center">
         <h1 className="text-purple-600 font-bold text-2xl mb-4">TWEAK</h1>
         <h2 className="font-semibold mb-6">Select Your Skin Tone</h2>

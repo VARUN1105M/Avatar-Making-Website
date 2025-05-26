@@ -3,8 +3,8 @@ import * as React from "react";
 const AvatarBody = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={732}
-    height={2150}
+    width={150}
+    height={250}
     fill="none"
     viewBox="0 0 732 2150"
     {...props}
