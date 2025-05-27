@@ -80,6 +80,12 @@ const Navigation = () => {
       >
         shirt color
       </Link>
+      <Link
+        to="/pantcolorselector"
+        className="text-black font-bold hover:text-purple-300 transition mx-2"
+      >
+        Pant color
+      </Link>
     </nav>
   );
 };

@@ -9,6 +9,7 @@ import SkinToneSelector from './Pages/SkinToneSelector';
 import OutfitSelector from './Pages/OutfitSelector';
 import HaircolorSelector from './Pages/Haircolor';
 import Shirtcolor from './Pages/Shirtcolor';
+import Pantcolor from './Pages/Pantcolor';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/outfitselector" element={<OutfitSelector />} />
         <Route path="/haircolorselector" element={<HaircolorSelector />} />
         <Route path="/shirtcolorselector" element={<Shirtcolor />} />
+        <Route path="/pantcolorselector" element={<Pantcolor/>}/>
       </Routes>
     </>
   );
