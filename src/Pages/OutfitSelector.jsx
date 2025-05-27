@@ -16,15 +16,17 @@ export default function OutfitSelector() {
   const [selectedSVG, setSelectedSVG] = useState('');
   const [SelectedComponent, setSelectedComponent] = useState(null);
   const [selectedCostumeId, setSelectedCostumeId] = useState(null);
-  const [skinTone, setSkinTone] = useState(skinToneFromState); // 🔁 State to store DB value
+  const [skinTone, setSkinTone] = useState(skinToneFromState);
+  const [hairColor, setHairColor] = useState(null);
+  const [shirtColor, setShirtColor] = useState(null); // ✅ State to store shirt color
 
   useEffect(() => {
     console.log('Skin Tone from previous page (state):', skinToneFromState);
-    handleCostumeClick(costumes[0]); // Load first costume initially
-    fetchSkinColor(); // 🔁 Fetch from Supabase
+    handleCostumeClick(costumes[0]);
+    fetchUserColors(); // ✅ Fetch all required values
   }, []);
 
-  const fetchSkinColor = async () => {
+  const fetchUserColors = async () => {
     const {
       data: { user },
       error: userError,
@@ -37,15 +39,19 @@ export default function OutfitSelector() {
 
     const { data, error } = await supabase
       .from('user_profiles')
-      .select('skincolorcode')
+      .select('skincolorcode, haircolorcode, shirtcolorcode') // ✅ Include shirtcolorcode
       .eq('id', user.id)
       .single();
 
     if (error) {
-      console.error('Error fetching skin color:', error.message);
+      console.error('Error fetching user profile:', error.message);
     } else {
       console.log('✅ Skin Color Code from DB:', data.skincolorcode);
+      console.log('✅ Hair Color Code from DB:', data.haircolorcode);
+      console.log('✅ Shirt Color Code from DB:', data.shirtcolorcode); // ✅ Log shirt color
       setSkinTone(data.skincolorcode);
+      setHairColor(data.haircolorcode);
+      setShirtColor(data.shirtcolorcode); // ✅ Store shirt color
     }
   };
 
@@ -87,7 +93,11 @@ export default function OutfitSelector() {
         <div className="flex justify-center items-center h-56 mb-4">
           <div className="w-40 h-56">
             {SelectedComponent ? (
-              <SelectedComponent skintone={skinTone} />
+              <SelectedComponent
+                skintone={skinTone}
+                haircolor={hairColor}
+                shirtcolor={shirtColor} // ✅ Pass to component if needed
+              />
             ) : (
               <div dangerouslySetInnerHTML={{ __html: selectedSVG }} />
             )}
@@ -112,7 +122,11 @@ export default function OutfitSelector() {
                 >
                   <div className="w-16 h-24 flex items-center justify-center">
                     {CostumePreview ? (
-                      <CostumePreview skintone={skinTone} />
+                      <CostumePreview
+                        skintone={skinTone}
+                        haircolor={hairColor}
+                        shirtcolor={shirtColor}
+                      />
                     ) : (
                       <img
                         src={costume.file}

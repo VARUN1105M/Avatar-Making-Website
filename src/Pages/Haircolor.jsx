@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // ✅ Import navigate
 import { supabase } from '../../supabase/Supabase'; // Update the path if needed
 
 const gradientBackground = {
@@ -12,6 +13,7 @@ const gradientBackground = {
 };
 
 function HairToneSelector() {
+  const navigate = useNavigate(); // ✅ Hook to handle navigation
   const [selectedTone, setSelectedTone] = useState(null);
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -56,7 +58,6 @@ function HairToneSelector() {
 
     setLoading(true);
 
-    // ✅ Required log format
     console.log(`Storing in Supabase -> user_id: ${userId}  | haircolorcode: ${selectedTone}`);
 
     const { error } = await supabase
@@ -74,6 +75,7 @@ function HairToneSelector() {
     } else {
       console.log('✅ Hair tone submitted successfully!');
       alert('Hair tone saved successfully!');
+      navigate('/outfitselector'); // ✅ Navigate after success
     }
   };
 

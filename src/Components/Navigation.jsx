@@ -74,6 +74,12 @@ const Navigation = () => {
       >
         Skin Tone
       </Link>
+      <Link
+        to="/shirtcolorselector"
+        className="text-black font-bold hover:text-purple-300 transition mx-2"
+      >
+        shirt color
+      </Link>
     </nav>
   );
 };
