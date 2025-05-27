@@ -19,7 +19,8 @@ export default function OutfitSelector() {
   const [skinTone, setSkinTone] = useState(skinToneFromState);
   const [hairColor, setHairColor] = useState(null);
   const [shirtColor, setShirtColor] = useState(null);
-  const [pantColor, setPantColor] = useState(null); // ✅ Pant color state
+  const [pantColor, setPantColor] = useState(null); 
+  const [shoecolor, setShoecolor] = useState(null); // ✅ shoe color state
 
   useEffect(() => {
     console.log('Skin Tone from previous page (state):', skinToneFromState);
@@ -40,7 +41,7 @@ export default function OutfitSelector() {
 
     const { data, error } = await supabase
       .from('user_profiles')
-      .select('skincolorcode, haircolorcode, shirtcolorcode, pantcolorcode') // ✅ Include pantcolorcode
+      .select('skincolorcode, haircolorcode, shirtcolorcode, pantcolorcode, shoecolorcode') // ✅ Include shoecolorcode
       .eq('id', user.id)
       .single();
 
@@ -50,11 +51,14 @@ export default function OutfitSelector() {
       console.log('✅ Skin Color Code from DB:', data.skincolorcode);
       console.log('✅ Hair Color Code from DB:', data.haircolorcode);
       console.log('✅ Shirt Color Code from DB:', data.shirtcolorcode);
-      console.log('✅ Pant Color Code from DB:', data.pantcolorcode); // ✅ Log pant color
+      console.log('✅ Pant Color Code from DB:', data.pantcolorcode); 
+      console.log('✅ shoe Color Code from DB:', data.shoecolorcode); // ✅ Log shoe color
+      
       setSkinTone(data.skincolorcode);
       setHairColor(data.haircolorcode);
       setShirtColor(data.shirtcolorcode);
-      setPantColor(data.pantcolorcode); // ✅ Store pant color
+      setPantColor(data.pantcolorcode);
+      setShoecolor(data.shoecolorcode); // ✅ Store shoe color
     }
   };
 
@@ -100,7 +104,8 @@ export default function OutfitSelector() {
                 skintone={skinTone}
                 haircolor={hairColor}
                 shirtcolor={shirtColor}
-                pantcolor={pantColor} // ✅ Pass pant color to component
+                pantcolor={pantColor} 
+                shoecolor={shoecolor} // ✅ Pass shoe color to component
               />
             ) : (
               <div dangerouslySetInnerHTML={{ __html: selectedSVG }} />
@@ -131,6 +136,7 @@ export default function OutfitSelector() {
                         haircolor={hairColor}
                         shirtcolor={shirtColor}
                         pantcolor={pantColor}
+                        shoecolor={shoecolor}
                       />
                     ) : (
                       <img

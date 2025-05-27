@@ -86,6 +86,12 @@ const Navigation = () => {
       >
         Pant color
       </Link>
+      <Link 
+        to="/shoecolorselector"
+        className="text-black font-bold hover:text-purple-300 transition mx-2"
+      >
+        Shoe color
+      </Link>
     </nav>
   );
 };
