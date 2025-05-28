@@ -12,6 +12,7 @@ import Shirtcolor from './Pages/Shirtcolor';
 import Pantcolor from './Pages/Pantcolor';
 import ShoeColor from './Pages/Shoecolor';
 import About from './Pages/About';
+import ErrorBoundary from './Components/ErrorBoundary';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/pantcolorselector" element={<Pantcolor/>}/>
         <Route path="/shoecolorselector" element={<ShoeColor/>}/>
         <Route path="/about" element={<About/>}/>
+        <Route path='/errorboundary' element={<ErrorBoundary/>}/>
       </Routes>
     </>
   );

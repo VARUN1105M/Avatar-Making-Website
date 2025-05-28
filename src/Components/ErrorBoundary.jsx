@@ -7,18 +7,24 @@ class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error) {
-    // Update state so the next render shows the fallback UI
-    return { hasError: true, errorMessage: error.message };
+    return { hasError: true, errorMessage: error.message || "An unexpected error occurred." };
   }
 
   componentDidCatch(error, errorInfo) {
-    // You can log the error to an external service here
     console.error("Error caught by ErrorBoundary:", error, errorInfo);
-    // Example: logErrorToService(error, errorInfo);
+    
+    // Optional: log to an external service
+    if (this.props.onError) {
+      this.props.onError(error, errorInfo);
+    }
   }
 
   handleRetry = () => {
     this.setState({ hasError: false, errorMessage: "" });
+    // Optionally refresh the page or reset state globally
+    if (this.props.onRetry) {
+      this.props.onRetry();
+    }
   };
 
   render() {
@@ -29,16 +35,22 @@ class ErrorBoundary extends React.Component {
           backgroundColor: "#ffe5e5",
           color: "#b00020",
           borderRadius: "10px",
-          margin: "20px",
-          fontFamily: "Arial"
+          margin: "20px auto",
+          maxWidth: "600px",
+          fontFamily: "Arial",
+          textAlign: "center"
         }}>
-          <h2>Something went wrong:</h2>
-          <pre style={{ whiteSpace: "pre-wrap" }}>{this.state.errorMessage}</pre>
+          <h2>Oops! Something went wrong.</h2>
+          <pre style={{
+            whiteSpace: "pre-wrap",
+            margin: "10px 0",
+            fontSize: "14px"
+          }}>{this.state.errorMessage}</pre>
           <button
             onClick={this.handleRetry}
             style={{
               marginTop: "10px",
-              padding: "8px 16px",
+              padding: "10px 20px",
               backgroundColor: "#b00020",
               color: "#fff",
               border: "none",

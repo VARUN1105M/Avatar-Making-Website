@@ -35,7 +35,6 @@ function UserDetails() {
       return;
     }
 
-    // Make sure gender is in lowercase as required by the DB
     const lowercaseGender = gender.toLowerCase();
 
     const { data, error } = await supabase
@@ -57,7 +56,12 @@ function UserDetails() {
     }
   };
 
-  w
+  const gradientBackground = {
+    minHeight: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  };
 
   return (
     <div style={gradientBackground}>
@@ -79,7 +83,7 @@ function UserDetails() {
             required
           >
             <option value="">Select Gender</option>
-            <option value="male">Male</option> {/* ✅ Lowercase only */}
+            <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>

@@ -93,6 +93,9 @@ const Navigation = () => {
             <button onClick={() => handleNavigate('/shoecolorselector')} className="text-left text-black hover:text-purple-400 transition whitespace-nowrap">
               Shoe Color
             </button>
+            <button onClick={() => handleNavigate('/userdetails')} className="text-left text-black hover:text-purple-400 transition whitespace-nowrap">
+              Age
+            </button>
           </div>
         )}
       </div>
