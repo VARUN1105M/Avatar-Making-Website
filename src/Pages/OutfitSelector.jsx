@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import AvatarBody from '../Components/AvatharBody'; // Adjust path as needed
+import AvatarBody from '../Components/AvatharBodymale'; // Adjust path as needed
 import { supabase } from '../../supabase/Supabase'; // ✅ Make sure this path is correct
-import AvatarBody1 from '../Components/Avathar1';
+import AvatarBody1 from '../Components/Avathar1male';
 
-const costumes = [
+const allCostumes = [
   { id: 1, component: AvatarBody, label: 'Costume 1' },
   { id: 2, component: AvatarBody1, label: 'Costume 2' },
+  // Add more costumes here if you want
 ];
 
 export default function OutfitSelector() {
@@ -20,13 +21,24 @@ export default function OutfitSelector() {
   const [hairColor, setHairColor] = useState(null);
   const [shirtColor, setShirtColor] = useState(null);
   const [pantColor, setPantColor] = useState(null); 
-  const [shoecolor, setShoecolor] = useState(null); // ✅ shoe color state
+  const [shoecolor, setShoecolor] = useState(null); 
+  const [age, setAge] = useState(null);
+
+  // Filter costumes based on age
+  const filteredCostumes = React.useMemo(() => {
+    if (age >= 25 && age <= 40) {
+      return allCostumes.filter(c => c.id === 1 || c.id === 2);
+    }
+    return allCostumes;
+  }, [age]);
 
   useEffect(() => {
     console.log('Skin Tone from previous page (state):', skinToneFromState);
-    handleCostumeClick(costumes[0]);
-    fetchUserColors(); // ✅ Fetch all color data
-  }, []);
+    if (filteredCostumes.length > 0) {
+      handleCostumeClick(filteredCostumes[0]);
+    }
+    fetchUserColors();
+  }, [age]); // Run effect on age change so it updates costumes
 
   const fetchUserColors = async () => {
     const {
@@ -41,7 +53,7 @@ export default function OutfitSelector() {
 
     const { data, error } = await supabase
       .from('user_profiles')
-      .select('skincolorcode, haircolorcode, shirtcolorcode, pantcolorcode, shoecolorcode') // ✅ Include shoecolorcode
+      .select('skincolorcode, haircolorcode, shirtcolorcode, pantcolorcode, shoecolorcode, age')
       .eq('id', user.id)
       .single();
 
@@ -52,13 +64,15 @@ export default function OutfitSelector() {
       console.log('✅ Hair Color Code from DB:', data.haircolorcode);
       console.log('✅ Shirt Color Code from DB:', data.shirtcolorcode);
       console.log('✅ Pant Color Code from DB:', data.pantcolorcode); 
-      console.log('✅ shoe Color Code from DB:', data.shoecolorcode); // ✅ Log shoe color
-      
+      console.log('✅ Shoe Color Code from DB:', data.shoecolorcode);
+      console.log('Age is: ', data.age);
+
       setSkinTone(data.skincolorcode);
       setHairColor(data.haircolorcode);
       setShirtColor(data.shirtcolorcode);
       setPantColor(data.pantcolorcode);
-      setShoecolor(data.shoecolorcode); // ✅ Store shoe color
+      setShoecolor(data.shoecolorcode);
+      setAge(data.age);
     }
   };
 
@@ -105,7 +119,7 @@ export default function OutfitSelector() {
                 haircolor={hairColor}
                 shirtcolor={shirtColor}
                 pantcolor={pantColor} 
-                shoecolor={shoecolor} // ✅ Pass shoe color to component
+                shoecolor={shoecolor}
               />
             ) : (
               <div dangerouslySetInnerHTML={{ __html: selectedSVG }} />
@@ -116,7 +130,7 @@ export default function OutfitSelector() {
         <div className="space-y-2">
           <h3 className="font-semibold text-gray-800">Select Costume</h3>
           <div className="flex justify-center gap-6">
-            {costumes.map((costume) => {
+            {filteredCostumes.map((costume) => {
               const CostumePreview = costume.component ? costume.component : null;
               return (
                 <button
