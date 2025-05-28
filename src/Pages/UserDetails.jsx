@@ -57,14 +57,7 @@ function UserDetails() {
     }
   };
 
-  const gradientBackground = {
-    background: 'linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1)',
-    minHeight: '100vh',
-    width: '100vw',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  };
+  w
 
   return (
     <div style={gradientBackground}>

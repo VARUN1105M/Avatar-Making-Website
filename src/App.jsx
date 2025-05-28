@@ -11,6 +11,7 @@ import HaircolorSelector from './Pages/Haircolor';
 import Shirtcolor from './Pages/Shirtcolor';
 import Pantcolor from './Pages/Pantcolor';
 import ShoeColor from './Pages/Shoecolor';
+import About from './Pages/About';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/shirtcolorselector" element={<Shirtcolor />} />
         <Route path="/pantcolorselector" element={<Pantcolor/>}/>
         <Route path="/shoecolorselector" element={<ShoeColor/>}/>
+        <Route path="/about" element={<About/>}/>
       </Routes>
     </>
   );

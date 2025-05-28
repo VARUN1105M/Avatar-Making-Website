@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import AvatarBody from '../Components/AvatharBody'; // Adjust path as needed
 import { supabase } from '../../supabase/Supabase'; // ✅ Make sure this path is correct
+import AvatarBody1 from '../Components/Avathar1';
 
 const costumes = [
   { id: 1, component: AvatarBody, label: 'Costume 1' },
-  { id: 2, file: '/assets/man.svg', label: 'Costume 2' },
-  { id: 3, file: '/assets/man1.svg', label: 'Costume 3' },
+  { id: 2, component: AvatarBody1, label: 'Costume 2' },
 ];
 
 export default function OutfitSelector() {
@@ -129,7 +129,7 @@ export default function OutfitSelector() {
                   }`}
                   aria-label={`Select ${costume.label}`}
                 >
-                  <div className="w-16 h-24 flex items-center justify-center">
+                  <div className="w-10 h-24 flex items-center justify-center">
                     {CostumePreview ? (
                       <CostumePreview
                         skintone={skinTone}
