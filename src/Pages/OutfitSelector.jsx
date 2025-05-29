@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import AvatarBody from '../Components/AvatharBodymale'; // Costume 1
 import AvatarBody1 from '../Components/Avathar1male';   // Costume 2
 import Womenavathar from '../Components/Womenavathar';  // Costume 3
 import { supabase } from '../../supabase/Supabase';
+import html2canvas from 'html2canvas';
 
 const allCostumes = [
   { id: 1, component: AvatarBody, label: 'Costume 1 (Male)' },
@@ -15,6 +16,7 @@ export default function OutfitSelector() {
   const location = useLocation();
   const skinToneFromState = location.state?.skinTone || null;
 
+  const avatarRef = useRef(null); // Ref to capture avatar
   const [selectedSVG, setSelectedSVG] = useState('');
   const [SelectedComponent, setSelectedComponent] = useState(null);
   const [selectedCostumeId, setSelectedCostumeId] = useState(null);
@@ -37,11 +39,7 @@ export default function OutfitSelector() {
     if (age !== null && gender !== null) {
       let newFiltered;
       if (gender === 'male') {
-        if (age >= 25 && age <= 40) {
-          newFiltered = allCostumes.filter(c => c.id === 1 || c.id === 2);
-        } else {
-          newFiltered = allCostumes.filter(c => c.id === 1 || c.id === 2);
-        }
+        newFiltered = allCostumes.filter(c => c.id === 1 || c.id === 2);
       } else if (gender === 'female') {
         newFiltered = allCostumes.filter(c => c.id === 3);
       } else {
@@ -99,6 +97,21 @@ export default function OutfitSelector() {
     setSelectedCostumeId(costume.id);
   };
 
+  const handleDownload = async () => {
+    if (!avatarRef.current) return;
+
+    const canvas = await html2canvas(avatarRef.current, {
+      backgroundColor: '#ffffff', // white background
+      useCORS: true,
+      scale: 2, // high resolution
+    });
+
+    const link = document.createElement('a');
+    link.download = 'avatar.jpg';
+    link.href = canvas.toDataURL('image/jpeg', 1.0);
+    link.click();
+  };
+
   const gradientBackground = {
     background: 'linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1)',
     minHeight: '100vh',
@@ -118,7 +131,7 @@ export default function OutfitSelector() {
         </div>
 
         <div className="flex justify-center items-center h-56 mb-4">
-          <div className="w-40 h-56">
+          <div ref={avatarRef} className="w-40 h-56">
             {SelectedComponent ? (
               <SelectedComponent
                 skintone={skinTone}
@@ -172,6 +185,14 @@ export default function OutfitSelector() {
             })}
           </div>
         </div>
+
+        {/* Download Button */}
+        <button
+          onClick={handleDownload}
+          className="mt-4 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition"
+        >
+          Download Avatar as JPG
+        </button>
       </div>
     </div>
   );
